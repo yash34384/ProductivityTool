@@ -86,8 +86,12 @@ const AddToDo = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <Pressable style={style.createBtn}>
-        <Text style={style.btnTitle}>Create</Text>
+      <Pressable
+        style={({ pressed }) =>
+          pressed ? [style.createBtn, style.pressed] : style.createBtn
+        }
+      >
+        <Text style={style.btnTitle}>Add</Text>
       </Pressable>
     </View>
   );
@@ -114,7 +118,6 @@ const style = StyleSheet.create({
     borderRadius: 10
   },
   box: {
-    borderColor: 'black',
     borderWidth: 1,
     borderStyle: 'dashed',
     borderRadius: 10,
@@ -133,7 +136,6 @@ const style = StyleSheet.create({
   radio: {
     width: 30,
     height: 30,
-    border: 'black',
     borderWidth: 2,
     borderRadius: 15,
     marginRight: 5,
@@ -149,5 +151,19 @@ const style = StyleSheet.create({
   radioText: {
     fontSize: 20,
     fontFamily: 'mukta-6'
+  },
+  createBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 55,
+    borderWidth: 2,
+    borderRadius: 10
+  },
+  pressed: {
+    opacity: 0.3
+  },
+  btnTitle: {
+    fontFamily: 'mukta-6',
+    fontSize: 25
   }
 });
