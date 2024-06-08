@@ -7,6 +7,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { AddToDo, Eisenhower, Home, Kanban, OneThreeFive, Pomodoro, ThreeMethod, TimeBlocking } from './Screens';
 import BarBtn from './Components/BarBtn';
+import { Provider } from 'react-redux';
+import { store } from './Store/store';
 
 const Stack = createStackNavigator();
 
@@ -32,44 +34,46 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-          headerTitleStyle: {
-            fontSize: 30,
-            fontFamily: 'mukta-6'
-          },
-          contentStyle: {
-            backgroundColor: '#dee2e6'
-          }
-        }} >
-          <Stack.Screen name='Home' component={Home} options={({ navigation }) => ({
-            title: 'Productivity',
-            headerRight: ({ tintColor }) => <BarBtn icon="add-circle" size={34} color={tintColor} onPress={() => { navigation.navigate("AddToDo") }} />
-          })} />
-          <Stack.Screen name='TimeBlocking' component={TimeBlocking} options={{
-            title: 'Time Blocking',
-          }} />
-          <Stack.Screen name='Kanban' component={Kanban} options={{
-            title: 'Kanban Board',
-          }} />
-          <Stack.Screen name='Pomodoro' component={Pomodoro} options={{
-            title: 'Pomodoro Technique',
-          }} />
-          <Stack.Screen name='ThreeMethod' component={ThreeMethod} options={{
-            title: '3-3-3 Method',
-          }} />
-          <Stack.Screen name='Eisenhower' component={Eisenhower} options={{
-            title: 'Eisenhower Matrix',
-          }} />
-          <Stack.Screen name='OneThreeFive' component={OneThreeFive} options={{
-            title: '1-3-5 Method',
-          }} />
-          <Stack.Screen name='AddToDo' component={AddToDo} options={{
-            title: 'Add Task',
-            presentation: 'modal'
-          }} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{
+            headerTitleStyle: {
+              fontSize: 30,
+              fontFamily: 'mukta-6'
+            },
+            contentStyle: {
+              backgroundColor: '#dee2e6'
+            }
+          }} >
+            <Stack.Screen name='Home' component={Home} options={({ navigation }) => ({
+              title: 'Productivity',
+              headerRight: ({ tintColor }) => <BarBtn icon="add-circle" size={34} color={tintColor} onPress={() => { navigation.navigate("AddToDo") }} />
+            })} />
+            <Stack.Screen name='TimeBlocking' component={TimeBlocking} options={{
+              title: 'Time Blocking',
+            }} />
+            <Stack.Screen name='Kanban' component={Kanban} options={{
+              title: 'Kanban Board',
+            }} />
+            <Stack.Screen name='Pomodoro' component={Pomodoro} options={{
+              title: 'Pomodoro Technique',
+            }} />
+            <Stack.Screen name='ThreeMethod' component={ThreeMethod} options={{
+              title: '3-3-3 Method',
+            }} />
+            <Stack.Screen name='Eisenhower' component={Eisenhower} options={{
+              title: 'Eisenhower Matrix',
+            }} />
+            <Stack.Screen name='OneThreeFive' component={OneThreeFive} options={{
+              title: '1-3-5 Method',
+            }} />
+            <Stack.Screen name='AddToDo' component={AddToDo} options={{
+              title: 'Add Task',
+              presentation: 'modal'
+            }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </>
   );
 }

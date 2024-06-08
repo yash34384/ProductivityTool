@@ -1,11 +1,13 @@
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Dimensions } from 'react-native';
 import React from 'react';
 import HomeBtn from '../Components/HomeBtn';
+
+const { height: deviceHeight } = Dimensions.get('window');
 
 const Home = ({ navigation }) => {
   return (
     <ScrollView>
-      <View style={style.container}>
+      <View style={[style.container, { minHeight: deviceHeight - 56 }]}>
         <HomeBtn
           style={style.homeBtn}
           logo={require('../assets/images/time-blocking.png')}

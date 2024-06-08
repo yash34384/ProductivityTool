@@ -4,102 +4,112 @@ import {
   TextInput,
   StyleSheet,
   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView,
+  Dimensions
 } from 'react-native';
 import React, { useState } from 'react';
+
+const { height: deviceHeight } = Dimensions.get('window');
 
 const AddToDo = () => {
   const [isImpo, setisImpo] = useState(0);
   const [isUrgent, setisUrgent] = useState(0);
   const [isMajor, setisMajor] = useState(0);
   return (
-    <View style={style.container}>
-      <View>
-        <Text style={style.title}>Task</Text>
-        <TextInput multiline placeholder="Add Task" style={style.taskInput} />
-      </View>
-      <View>
-        <Text style={style.title}>Is this task??</Text>
-        <View style={style.box}>
-          <TouchableOpacity onPress={() => setisImpo(0)}>
-            <View style={style.radioWrapper}>
-              <View style={style.radio}>
-                {isImpo == 0 ? <View style={style.radiobg}></View> : null}
-              </View>
-              <Text style={style.radioText}>Important</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setisImpo(1)}>
-            <View style={style.radioWrapper}>
-              <View style={style.radio}>
-                {isImpo == 1 ? <View style={style.radiobg}></View> : null}
-              </View>
-              <Text style={style.radioText}>Not Important</Text>
-            </View>
-          </TouchableOpacity>
+    <ScrollView style={style.scroll}>
+      <View style={[style.container, { minHeight: deviceHeight - 56 }]}>
+        <View>
+          <Text style={style.title}>Task</Text>
+          <TextInput multiline placeholder="Add Task" style={style.taskInput} />
         </View>
-        <View style={style.box}>
-          <TouchableOpacity onPress={() => setisUrgent(0)}>
-            <View style={style.radioWrapper}>
-              <View style={style.radio}>
-                {isUrgent == 0 ? <View style={style.radiobg}></View> : null}
+        <View>
+          <Text style={style.title}>Is this task??</Text>
+          <View style={style.box}>
+            <TouchableOpacity onPress={() => setisImpo(0)}>
+              <View style={style.radioWrapper}>
+                <View style={style.radio}>
+                  {isImpo == 0 ? <View style={style.radiobg}></View> : null}
+                </View>
+                <Text style={style.radioText}>Important</Text>
               </View>
-              <Text style={style.radioText}>Urgent</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setisUrgent(1)}>
-            <View style={style.radioWrapper}>
-              <View style={style.radio}>
-                {isUrgent == 1 ? <View style={style.radiobg}></View> : null}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setisImpo(1)}>
+              <View style={style.radioWrapper}>
+                <View style={style.radio}>
+                  {isImpo == 1 ? <View style={style.radiobg}></View> : null}
+                </View>
+                <Text style={style.radioText}>Not Important</Text>
               </View>
-              <Text style={style.radioText}>Not Urgent</Text>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
+          <View style={style.box}>
+            <TouchableOpacity onPress={() => setisUrgent(0)}>
+              <View style={style.radioWrapper}>
+                <View style={style.radio}>
+                  {isUrgent == 0 ? <View style={style.radiobg}></View> : null}
+                </View>
+                <Text style={style.radioText}>Urgent</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setisUrgent(1)}>
+              <View style={style.radioWrapper}>
+                <View style={style.radio}>
+                  {isUrgent == 1 ? <View style={style.radiobg}></View> : null}
+                </View>
+                <Text style={style.radioText}>Not Urgent</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <View>
-        <Text style={style.title}>Type of this task??</Text>
-        <View style={style.box}>
-          <TouchableOpacity onPress={() => setisMajor(0)}>
-            <View style={style.radioWrapper}>
-              <View style={style.radio}>
-                {isMajor == 0 ? <View style={style.radiobg}></View> : null}
+        <View>
+          <Text style={style.title}>Type of this task??</Text>
+          <View style={style.box}>
+            <TouchableOpacity onPress={() => setisMajor(0)}>
+              <View style={style.radioWrapper}>
+                <View style={style.radio}>
+                  {isMajor == 0 ? <View style={style.radiobg}></View> : null}
+                </View>
+                <Text style={style.radioText}>Major Task</Text>
               </View>
-              <Text style={style.radioText}>Major Task</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setisMajor(1)}>
-            <View style={style.radioWrapper}>
-              <View style={style.radio}>
-                {isMajor == 1 ? <View style={style.radiobg}></View> : null}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setisMajor(1)}>
+              <View style={style.radioWrapper}>
+                <View style={style.radio}>
+                  {isMajor == 1 ? <View style={style.radiobg}></View> : null}
+                </View>
+                <Text style={style.radioText}>Medium Task</Text>
               </View>
-              <Text style={style.radioText}>Medium Task</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setisMajor(2)}>
-            <View style={style.radioWrapper}>
-              <View style={style.radio}>
-                {isMajor == 2 ? <View style={style.radiobg}></View> : null}
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setisMajor(2)}>
+              <View style={style.radioWrapper}>
+                <View style={style.radio}>
+                  {isMajor == 2 ? <View style={style.radiobg}></View> : null}
+                </View>
+                <Text style={style.radioText}>Small Task</Text>
               </View>
-              <Text style={style.radioText}>Small Task</Text>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
+        <Pressable
+          style={({ pressed }) =>
+            pressed ? [style.createBtn, style.pressed] : style.createBtn
+          }
+        >
+          <Text style={style.btnTitle}>Add</Text>
+        </Pressable>
       </View>
-      <Pressable
-        style={({ pressed }) =>
-          pressed ? [style.createBtn, style.pressed] : style.createBtn
-        }
-      >
-        <Text style={style.btnTitle}>Add</Text>
-      </Pressable>
-    </View>
+    </ScrollView>
   );
 };
 
 export default AddToDo;
 
 const style = StyleSheet.create({
+  scroll: {
+    flex: 1,
+    backgroundColor: 'green'
+  },
   container: {
     flex: 1,
     backgroundColor: '#dee2e6',
