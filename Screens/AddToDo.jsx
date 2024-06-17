@@ -9,19 +9,38 @@ import {
   Dimensions
 } from 'react-native';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createTodo } from '../Store/ToDoSlice';
 
 const { height: deviceHeight } = Dimensions.get('window');
 
 const AddToDo = () => {
+  const dispatch = useDispatch();
+  const [taskDesc, settaskDesc] = useState('');
   const [isImpo, setisImpo] = useState(0);
   const [isUrgent, setisUrgent] = useState(0);
   const [isMajor, setisMajor] = useState(0);
+  const submitTodo = () => {
+    const todo = {
+      description: taskDesc.trim(),
+      isImportant: isImpo,
+      isUrgent: isUrgent,
+      taskType: isMajor
+    };
+    dispatch(createTodo(todo));
+  };
   return (
     <ScrollView style={style.scroll}>
       <View style={[style.container, { minHeight: deviceHeight - 56 }]}>
         <View>
           <Text style={style.title}>Task</Text>
-          <TextInput multiline placeholder="Add Task" style={style.taskInput} />
+          <TextInput
+            multiline
+            placeholder="Add Task"
+            style={style.taskInput}
+            value={taskDesc}
+            onChangeText={txt => settaskDesc(txt)}
+          />
         </View>
         <View>
           <Text style={style.title}>Is this task??</Text>
@@ -95,6 +114,7 @@ const AddToDo = () => {
           style={({ pressed }) =>
             pressed ? [style.createBtn, style.pressed] : style.createBtn
           }
+          onPress={submitTodo}
         >
           <Text style={style.btnTitle}>Add</Text>
         </Pressable>
