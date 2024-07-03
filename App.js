@@ -49,9 +49,10 @@ export default function App() {
               title: 'Productivity',
               headerRight: ({ tintColor }) => <BarBtn icon="add-circle" size={34} color={tintColor} onPress={() => { navigation.navigate("AddToDo") }} />
             })} />
-            <Stack.Screen name='TimeBlocking' component={TimeBlocking} options={{
+            <Stack.Screen name='TimeBlocking' component={TimeBlocking} options={({ navigation }) => ({
               title: 'Time Blocking',
-            }} />
+              headerRight: ({ tintColor }) => <BarBtn icon="add-circle" size={34} color={tintColor} onPress={() => { navigation.navigate("AddToDo") }} />
+            })} />
             <Stack.Screen name='Kanban' component={Kanban} options={{
               title: 'Kanban Board',
             }} />
@@ -77,10 +78,3 @@ export default function App() {
     </>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: 'black',
-//   },
-// });
