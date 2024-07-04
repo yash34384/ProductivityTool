@@ -32,7 +32,7 @@ const TimeBlocking = () => {
             pressed ? [style.go, style.pressed] : style.go
           }
         >
-          <Text style={style.goText}>{stages[item.state]}</Text>
+          <Text style={style.goText}>{stages[item.stage]}</Text>
         </Pressable>
       </View>
     );

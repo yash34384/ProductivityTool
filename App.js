@@ -4,11 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AddToDo, Eisenhower, Home, Kanban, OneThreeFive, Pomodoro, ThreeMethod, TimeBlocking } from './Screens';
 import BarBtn from './Components/BarBtn';
 import { Provider } from 'react-redux';
 import { store } from './Store/store';
+import { init } from './Utils/database';
 
 const Stack = createStackNavigator();
 
@@ -17,15 +18,22 @@ export default function App() {
     'mukta-4': require('./assets/fonts/Mukta-Regular.ttf'),
     'mukta-6': require('./assets/fonts/Mukta-Bold.ttf')
   });
+  const [dbInit, setDbInit] = useState(false);
 
   useEffect(() => {
     async function prepare() {
       await SplashScreen.preventAutoHideAsync();
     }
     prepare();
+    init().then(() => {
+      setDbInit(true);
+      console.log('db connected');
+    }).catch((error) => {
+      console.log(error);
+    });
   }, []);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || !dbInit) {
     return null;
   } else {
     SplashScreen.hideAsync();

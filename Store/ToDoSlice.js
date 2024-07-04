@@ -11,7 +11,7 @@ export const todoSlice = createSlice({
     createTodo: (state, action) => {
       const todo = {
         id: nanoid(),
-        state: 0,
+        stage: 0,
         ...action.payload
       }
       state.todos.unshift(todo);
