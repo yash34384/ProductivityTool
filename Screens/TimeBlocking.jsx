@@ -1,11 +1,30 @@
-import { View, FlatList, Text, StyleSheet, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { View, FlatList, Text, StyleSheet, Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+// import { useSelector } from "react-redux";
+import { deleteToDo, readToDo } from "../Utils/database";
+// import {NavigationEvents} from 'react-navigation';
 
-const TimeBlocking = () => {
-  const stages = ['Queued', 'Ongoing', 'Achieved'];
-  const todos = useSelector(state => state.todos);
+const TimeBlocking = ({ navigation }) => {
+  const [todos, settodos] = useState([]);
+  const stages = ["Queued", "Ongoing", "Achieved"];
+  useEffect(() => {
+    const gettingToDo = async (settodos) => {
+      await readToDo(settodos);
+      // const resp = await readToDo();
+      // settodos([...resp]);
+    };
+    gettingToDo(settodos);
+  }, []);
+  async function deletingTodo(id) {
+    await deleteToDo(id, () => readToDo(settodos));
+  }
+  function editingPage(id) {
+    navigation.navigate("AddToDo", {
+      editId: id,
+    });
+  }
+  // const todos = useSelector(state => state.todos);
   const todoComponent = ({ item }) => {
     return (
       <View style={{ marginBottom: 10 }}>
@@ -15,6 +34,7 @@ const TimeBlocking = () => {
               style={({ pressed }) =>
                 pressed ? [style.editable, style.pressed] : style.editable
               }
+              onPress={() => editingPage(item.id)}
             >
               <Text style={style.desc}>{item.description}</Text>
             </Pressable>
@@ -22,6 +42,7 @@ const TimeBlocking = () => {
               style={({ pressed }) =>
                 pressed ? [style.binIcon, style.pressed] : style.binIcon
               }
+              onPress={() => deletingTodo(item.id)}
             >
               <Ionicons name="trash-bin-sharp" size={35} color="black" />
             </Pressable>
@@ -41,8 +62,8 @@ const TimeBlocking = () => {
     <View style={style.TimeBlockingContainer}>
       <FlatList
         data={todos}
-        renderItem={itemData => todoComponent(itemData)}
-        keyExtractor={todo => todo.id}
+        renderItem={(itemData) => todoComponent(itemData)}
+        keyExtractor={(todo) => todo.id}
       />
     </View>
   );
@@ -52,32 +73,32 @@ export default TimeBlocking;
 
 const style = StyleSheet.create({
   TimeBlockingContainer: {
-    backgroundColor: '#dee2e6',
+    backgroundColor: "#dee2e6",
     flex: 1,
-    padding: 10
+    padding: 10,
   },
   TodoContainer: {
-    borderColor: 'black',
+    borderColor: "black",
     borderWidth: 1,
     borderRadius: 5,
-    borderBottomLeftRadius: 0
+    borderBottomLeftRadius: 0,
   },
   UpContainer: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   editable: {
     flex: 1,
-    paddingLeft: 5
+    paddingLeft: 5,
   },
   desc: {
     fontSize: 20,
-    fontFamily: 'mukta-4'
+    fontFamily: "mukta-4",
   },
   binIcon: {
     padding: 15,
-    borderLeftColor: 'black',
-    borderLeftWidth: 1
+    borderLeftColor: "black",
+    borderLeftWidth: 1,
   },
   go: {
     width: 100,
@@ -88,13 +109,13 @@ const style = StyleSheet.create({
     borderTopWidth: 0,
     paddingLeft: 10,
     paddingBottom: 5,
-    paddingRight: 10
+    paddingRight: 10,
   },
   goText: {
     fontSize: 20,
-    fontFamily: 'mukta-4'
+    fontFamily: "mukta-4",
   },
   pressed: {
-    opacity: 0.3
-  }
+    opacity: 0.3,
+  },
 });

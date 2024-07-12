@@ -6,28 +6,43 @@ import {
   Pressable,
   TouchableOpacity,
   ScrollView,
-  Dimensions
-} from 'react-native';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createTodo } from '../Store/ToDoSlice';
+  Dimensions,
+} from "react-native";
+import React, { useLayoutEffect, useState } from "react";
+import { createToDo } from "../Utils/database";
+import { gettingToDo } from "./TimeBlocking";
+// import { useDispatch } from "react-redux";
+// import { createTodo } from "../Store/ToDoSlice";
 
-const { height: deviceHeight } = Dimensions.get('window');
+const { height: deviceHeight } = Dimensions.get("window");
 
-const AddToDo = () => {
-  const dispatch = useDispatch();
-  const [taskDesc, settaskDesc] = useState('');
+const AddToDo = ({ route, navigation }) => {
+  // const dispatch = useDispatch();
+  const [taskDesc, settaskDesc] = useState("");
   const [isImpo, setisImpo] = useState(0);
   const [isUrgent, setisUrgent] = useState(0);
   const [isMajor, setisMajor] = useState(0);
-  const submitTodo = () => {
+
+  const editTodoId = route.params?.editId;
+  const isEditing = !!editTodoId;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? "Edit Task" : "Add Task",
+    });
+  }, [navigation, isEditing]);
+
+  const submitTodo = async () => {
     const todo = {
       description: taskDesc.trim(),
       isImportant: isImpo,
       isUrgent: isUrgent,
-      taskType: isMajor
+      taskType: isMajor,
+      stage: 0,
     };
-    dispatch(createTodo(todo));
+    await createToDo(todo);
+    // dispatch(createTodo(todo));
+    navigation.goBack();
   };
   return (
     <ScrollView style={style.scroll}>
@@ -39,7 +54,7 @@ const AddToDo = () => {
             placeholder="Add Task"
             style={style.taskInput}
             value={taskDesc}
-            onChangeText={txt => settaskDesc(txt)}
+            onChangeText={(txt) => settaskDesc(txt)}
           />
         </View>
         <View>
@@ -128,40 +143,40 @@ export default AddToDo;
 const style = StyleSheet.create({
   scroll: {
     flex: 1,
-    backgroundColor: 'green'
+    backgroundColor: "green",
   },
   container: {
     flex: 1,
-    backgroundColor: '#dee2e6',
-    padding: 10
+    backgroundColor: "#dee2e6",
+    padding: 10,
   },
   title: {
-    fontFamily: 'mukta-4',
-    fontSize: 30
+    fontFamily: "mukta-4",
+    fontSize: 30,
   },
   taskInput: {
     fontSize: 20,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
     padding: 10,
-    fontFamily: 'mukta-4',
-    borderRadius: 10
+    fontFamily: "mukta-4",
+    borderRadius: 10,
   },
   box: {
     borderWidth: 1,
-    borderStyle: 'dashed',
+    borderStyle: "dashed",
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
   },
   radioWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 3
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 3,
   },
   radio: {
     width: 30,
@@ -169,31 +184,31 @@ const style = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     marginRight: 5,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   radiobg: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     width: 20,
     height: 20,
-    borderRadius: 10
+    borderRadius: 10,
   },
   radioText: {
     fontSize: 20,
-    fontFamily: 'mukta-6'
+    fontFamily: "mukta-6",
   },
   createBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     height: 55,
     borderWidth: 2,
-    borderRadius: 10
+    borderRadius: 10,
   },
   pressed: {
-    opacity: 0.3
+    opacity: 0.3,
   },
   btnTitle: {
-    fontFamily: 'mukta-6',
-    fontSize: 25
-  }
+    fontFamily: "mukta-6",
+    fontSize: 25,
+  },
 });
