@@ -3,33 +3,41 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Pressable,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
-} from "react-native";
-import React, { useLayoutEffect, useState } from "react";
-import { createToDo } from "../Utils/database";
-import { gettingToDo } from "./TimeBlocking";
+  Dimensions
+} from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { createToDo, updateToDo } from '../Utils/database';
+import FormSubmitBtn from '../Components/FormSubmitBtn';
+// import { gettingToDo } from "./TimeBlocking";
 // import { useDispatch } from "react-redux";
 // import { createTodo } from "../Store/ToDoSlice";
 
-const { height: deviceHeight } = Dimensions.get("window");
+const { height: deviceHeight } = Dimensions.get('window');
 
 const AddToDo = ({ route, navigation }) => {
   // const dispatch = useDispatch();
-  const [taskDesc, settaskDesc] = useState("");
+  const [taskDesc, settaskDesc] = useState('');
   const [isImpo, setisImpo] = useState(0);
   const [isUrgent, setisUrgent] = useState(0);
   const [isMajor, setisMajor] = useState(0);
 
   const editTodoId = route.params?.editId;
   const isEditing = !!editTodoId;
+  const todo = route.params?.todo;
+  const setAllTodo = route.params?.setAllTodo;
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: isEditing ? "Edit Task" : "Add Task",
+      title: isEditing ? 'Edit Task' : 'Add Task'
     });
+    if (isEditing) {
+      settaskDesc(todo.description);
+      setisImpo(todo.isImportant);
+      setisUrgent(todo.isUrgent);
+      setisMajor(todo.taskType);
+    }
   }, [navigation, isEditing]);
 
   const submitTodo = async () => {
@@ -38,12 +46,25 @@ const AddToDo = ({ route, navigation }) => {
       isImportant: isImpo,
       isUrgent: isUrgent,
       taskType: isMajor,
-      stage: 0,
+      stage: 0
     };
     await createToDo(todo);
     // dispatch(createTodo(todo));
     navigation.goBack();
   };
+  const editTodo = async () => {
+    if (isEditing) {
+      const todo = {
+        description: taskDesc.trim(),
+        isImportant: isImpo,
+        isUrgent: isUrgent,
+        taskType: isMajor
+      };
+      await updateToDo(todo, editTodoId, setAllTodo);
+    }
+    navigation.goBack();
+  };
+
   return (
     <ScrollView style={style.scroll}>
       <View style={[style.container, { minHeight: deviceHeight - 56 }]}>
@@ -54,7 +75,7 @@ const AddToDo = ({ route, navigation }) => {
             placeholder="Add Task"
             style={style.taskInput}
             value={taskDesc}
-            onChangeText={(txt) => settaskDesc(txt)}
+            onChangeText={txt => settaskDesc(txt)}
           />
         </View>
         <View>
@@ -125,14 +146,11 @@ const AddToDo = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <Pressable
-          style={({ pressed }) =>
-            pressed ? [style.createBtn, style.pressed] : style.createBtn
-          }
-          onPress={submitTodo}
-        >
-          <Text style={style.btnTitle}>Add</Text>
-        </Pressable>
+        {isEditing ? (
+          <FormSubmitBtn onPress={editTodo}>Edit</FormSubmitBtn>
+        ) : (
+          <FormSubmitBtn onPress={submitTodo}>Add</FormSubmitBtn>
+        )}
       </View>
     </ScrollView>
   );
@@ -143,40 +161,40 @@ export default AddToDo;
 const style = StyleSheet.create({
   scroll: {
     flex: 1,
-    backgroundColor: "green",
+    backgroundColor: 'green'
   },
   container: {
     flex: 1,
-    backgroundColor: "#dee2e6",
-    padding: 10,
+    backgroundColor: '#dee2e6',
+    padding: 10
   },
   title: {
-    fontFamily: "mukta-4",
-    fontSize: 30,
+    fontFamily: 'mukta-4',
+    fontSize: 30
   },
   taskInput: {
     fontSize: 20,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: 'black',
     padding: 10,
-    fontFamily: "mukta-4",
-    borderRadius: 10,
+    fontFamily: 'mukta-4',
+    borderRadius: 10
   },
   box: {
     borderWidth: 1,
-    borderStyle: "dashed",
+    borderStyle: 'dashed',
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
   },
   radioWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 3
   },
   radio: {
     width: 30,
@@ -184,31 +202,17 @@ const style = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     marginRight: 5,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   radiobg: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
     width: 20,
     height: 20,
-    borderRadius: 10,
+    borderRadius: 10
   },
   radioText: {
     fontSize: 20,
-    fontFamily: "mukta-6",
-  },
-  createBtn: {
-    alignItems: "center",
-    justifyContent: "center",
-    height: 55,
-    borderWidth: 2,
-    borderRadius: 10,
-  },
-  pressed: {
-    opacity: 0.3,
-  },
-  btnTitle: {
-    fontFamily: "mukta-6",
-    fontSize: 25,
-  },
+    fontFamily: 'mukta-6'
+  }
 });
