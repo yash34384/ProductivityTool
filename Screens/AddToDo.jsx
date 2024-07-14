@@ -5,19 +5,20 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Dimensions
+  Dimensions,
+  LogBox,
+  Alert
 } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createToDo, updateToDo } from '../Utils/database';
 import FormSubmitBtn from '../Components/FormSubmitBtn';
-// import { gettingToDo } from "./TimeBlocking";
-// import { useDispatch } from "react-redux";
-// import { createTodo } from "../Store/ToDoSlice";
 
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state'
+]);
 const { height: deviceHeight } = Dimensions.get('window');
 
 const AddToDo = ({ route, navigation }) => {
-  // const dispatch = useDispatch();
   const [taskDesc, settaskDesc] = useState('');
   const [isImpo, setisImpo] = useState(0);
   const [isUrgent, setisUrgent] = useState(0);
@@ -28,7 +29,7 @@ const AddToDo = ({ route, navigation }) => {
   const todo = route.params?.todo;
   const setAllTodo = route.params?.setAllTodo;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       title: isEditing ? 'Edit Task' : 'Add Task'
     });
@@ -41,6 +42,12 @@ const AddToDo = ({ route, navigation }) => {
   }, [navigation, isEditing]);
 
   const submitTodo = async () => {
+    if (!taskDesc || taskDesc.trim().length === 0) {
+      Alert.alert('Invalid Description', 'Description can not be empty.', [
+        { text: 'Okay', style: 'default' }
+      ]);
+      return;
+    }
     const todo = {
       description: taskDesc.trim(),
       isImportant: isImpo,
@@ -49,7 +56,6 @@ const AddToDo = ({ route, navigation }) => {
       stage: 0
     };
     await createToDo(todo);
-    // dispatch(createTodo(todo));
     navigation.goBack();
   };
   const editTodo = async () => {
@@ -60,6 +66,12 @@ const AddToDo = ({ route, navigation }) => {
         isUrgent: isUrgent,
         taskType: isMajor
       };
+      if (!todo.description || todo.description.length === 0) {
+        Alert.alert('Invalid Description', 'Description can not be empty.', [
+          { text: 'Okay', style: 'default' }
+        ]);
+        return;
+      }
       await updateToDo(todo, editTodoId, setAllTodo);
     }
     navigation.goBack();

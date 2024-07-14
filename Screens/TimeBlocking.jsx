@@ -1,9 +1,12 @@
 import { View, FlatList, Text, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-// import { useSelector } from "react-redux";
-import { deleteToDo, readSingleToDo, readToDo } from '../Utils/database';
-// import {NavigationEvents} from 'react-navigation';
+import {
+  deleteToDo,
+  readSingleToDo,
+  readToDo,
+  updateToDoStage
+} from '../Utils/database';
 
 const TimeBlocking = ({ navigation }) => {
   const [todos, settodos] = useState([]);
@@ -12,8 +15,6 @@ const TimeBlocking = ({ navigation }) => {
   useEffect(() => {
     const gettingToDo = async settodos => {
       await readToDo(settodos);
-      // const resp = await readToDo();
-      // settodos([...resp]);
     };
     gettingToDo(settodos);
   }, []);
@@ -31,7 +32,16 @@ const TimeBlocking = ({ navigation }) => {
     });
   }
 
-  // const todos = useSelector(state => state.todos);
+  async function changeStage(id) {
+    const resp = await readSingleToDo(id);
+    let stage = resp[0].stage;
+    stage = stage + 1;
+    if (stage > 2) {
+      stage = 0;
+    }
+    await updateToDoStage(stage, id, () => readToDo(settodos));
+  }
+
   const todoComponent = ({ item }) => {
     return (
       <View style={{ marginBottom: 10 }}>
@@ -59,6 +69,7 @@ const TimeBlocking = ({ navigation }) => {
           style={({ pressed }) =>
             pressed ? [style.go, style.pressed] : style.go
           }
+          onPress={() => changeStage(item.id)}
         >
           <Text style={style.goText}>{stages[item.stage]}</Text>
         </Pressable>

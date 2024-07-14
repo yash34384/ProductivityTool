@@ -28,31 +28,6 @@ export function init() {
   return promise;
 }
 
-// creat todo 
-export function createToDo(todo) {
-  const promise = new Promise((resolve, reject) => {
-    database.transaction((txn) => {
-      txn.executeSql(
-        `INSERT INTO todos (description,isImportant, isUrgent, taskType, stage) VALUES (?,?,?,?,?)`,
-        [
-          todo.description,
-          todo.isImportant,
-          todo.isUrgent,
-          todo.taskType,
-          todo.stage,
-        ],
-        (_, result) => {
-          resolve(result);
-        },
-        (_, error) => {
-          reject(error);
-        }
-      );
-    });
-  });
-  return promise;
-}
-
 // read all todo 
 export function readToDo(settodos) {
   const promise = new Promise((resolve, reject) => {
@@ -90,6 +65,31 @@ export function readSingleToDo(id) {
   return promise;
 }
 
+// creat todo
+export function createToDo(todo) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((txn) => {
+      txn.executeSql(
+        `INSERT INTO todos (description,isImportant, isUrgent, taskType, stage) VALUES (?,?,?,?,?)`,
+        [
+          todo.description,
+          todo.isImportant,
+          todo.isUrgent,
+          todo.taskType,
+          todo.stage,
+        ],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+  return promise;
+}
+
 // update todo 
 export function updateToDo(todo, id, setAllTodo) {
   const promise = new Promise((resolve, reject) => {
@@ -103,6 +103,24 @@ export function updateToDo(todo, id, setAllTodo) {
         },
         (_, error) => {
           reject(error);
+        })
+    })
+  });
+  return promise;
+}
+
+export function updateToDoStage(stage, id, readToDo) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((txn) => {
+      txn.executeSql(
+        `UPDATE todos SET stage = ? Where id = ?`,
+        [stage, id],
+        (_, result) => {
+          readToDo();
+          resolve(result);
+        },
+        (_, error) => {
+          resolve(error);
         })
     })
   });
