@@ -6,21 +6,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
-<<<<<<< HEAD
-} from "react-native";
-import React, { useLayoutEffect, useState } from "react";
-import { createToDo } from "../Utils/database";
-// import { gettingToDo } from "./TimeBlocking";
-// import { useDispatch } from "react-redux";
-// import { createTodo } from "../Store/ToDoSlice";
-=======
   LogBox,
   Alert
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { createToDo, updateToDo } from '../Utils/database';
 import FormSubmitBtn from '../Components/FormSubmitBtn';
->>>>>>> 298306ac9fa786789d787a811e6014362eb6b110
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state'
