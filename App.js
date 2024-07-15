@@ -10,6 +10,7 @@ import {
   Eisenhower,
   Home,
   Kanban,
+  KanbanList,
   OneThreeFive,
   Pomodoro,
   ThreeMethod,
@@ -126,6 +127,14 @@ export default function App() {
             component={AddToDo}
             options={{
               title: "Add Task",
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name="KanbanList"
+            component={KanbanList}
+            options={{
+              title: "Kanban List",
               presentation: "modal",
             }}
           />

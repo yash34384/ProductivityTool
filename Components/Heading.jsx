@@ -15,7 +15,6 @@ export default Heading;
 
 const style = StyleSheet.create({
   headingContainer: {
-    backgroundColor: 'red',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'

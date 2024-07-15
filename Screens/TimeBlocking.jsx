@@ -10,7 +10,7 @@ import {
 
 const TimeBlocking = ({ navigation }) => {
   const [todos, settodos] = useState([]);
-  const stages = ['Queued', 'Ongoing', 'Achieved'];
+  const stages = ['To do', 'Doing', 'Done'];
 
   useEffect(() => {
     const gettingToDo = async settodos => {
