@@ -16,8 +16,6 @@ import {
   TimeBlocking,
 } from "./Screens";
 import BarBtn from "./Components/BarBtn";
-// import { Provider } from 'react-redux';
-// import { store } from './Store/store';
 import { init } from "./Utils/database";
 
 const Stack = createStackNavigator();
@@ -52,7 +50,6 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      {/* <Provider store={store}> */}
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -85,19 +82,9 @@ export default function App() {
           <Stack.Screen
             name="TimeBlocking"
             component={TimeBlocking}
-            options={({ navigation }) => ({
-              title: "Time Blocking",
-              // headerRight: ({ tintColor }) => (
-              //   <BarBtn
-              //     icon="add-circle"
-              //     size={34}
-              //     color={tintColor}
-              //     onPress={() => {
-              //       navigation.navigate("AddToDo");
-              //     }}
-              //   />
-              // ),
-            })}
+            options={{
+              title: "Time Blocking"
+            }}
           />
           <Stack.Screen
             name="Kanban"
@@ -144,7 +131,6 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      {/* </Provider> */}
     </>
   );
 }

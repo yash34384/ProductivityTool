@@ -2,6 +2,7 @@ import * as SQLite from "expo-sqlite/legacy";
 
 const database = SQLite.openDatabase("todos.db");
 
+// initializing the database 
 export function init() {
   const promise = new Promise((resolve, reject) => {
     database.transaction((txn) => {
@@ -27,6 +28,44 @@ export function init() {
   return promise;
 }
 
+// read all todo 
+export function readToDo(settodos) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((txn) => {
+      txn.executeSql(
+        `SELECT * FROM todos ORDER BY id DESC`,
+        [],
+        (_, result) => {
+          settodos(result.rows._array);
+          resolve(result.rows._array);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+  return promise;
+}
+
+// read single todo 
+export function readSingleToDo(id) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((txn) => {
+      txn.executeSql(
+        `SELECT * FROM todos WHERE id = ?`,
+        [id],
+        (_, result) => {
+          resolve(result.rows._array);
+        }, (_, error) => {
+          reject(error);
+        })
+    })
+  })
+  return promise;
+}
+
+// creat todo
 export function createToDo(todo) {
   const promise = new Promise((resolve, reject) => {
     database.transaction((txn) => {
@@ -51,24 +90,44 @@ export function createToDo(todo) {
   return promise;
 }
 
-export function readToDo(settodos) {
+// update todo 
+export function updateToDo(todo, id, setAllTodo) {
   const promise = new Promise((resolve, reject) => {
     database.transaction((txn) => {
       txn.executeSql(
-        `SELECT * FROM todos ORDER BY id DESC`,
-        [],
+        `UPDATE todos SET description = ?, isImportant = ?, isUrgent = ?, taskType = ? WHERE id = ?`,
+        [todo.description, todo.isImportant, todo.isUrgent, todo.taskType, id],
         (_, result) => {
-          settodos(result.rows._array);
-          resolve(result.rows._array);
+          setAllTodo();
+          resolve(result);
         },
         (_, error) => {
           reject(error);
-        }
-      );
-    });
+        })
+    })
   });
   return promise;
 }
+
+export function updateToDoStage(stage, id, readToDo) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((txn) => {
+      txn.executeSql(
+        `UPDATE todos SET stage = ? Where id = ?`,
+        [stage, id],
+        (_, result) => {
+          readToDo();
+          resolve(result);
+        },
+        (_, error) => {
+          resolve(error);
+        })
+    })
+  });
+  return promise;
+}
+
+// delete todo 
 export function deleteToDo(id, readToDo) {
   const promise = new Promise((resolve, reject) => {
     database.transaction((txn) => {
@@ -76,12 +135,10 @@ export function deleteToDo(id, readToDo) {
         `DELETE FROM todos WHERE id = ?`,
         [id],
         (_, result) => {
-          console.log(result);
           readToDo();
           resolve(result);
         },
         (_, error) => {
-          console.log(error);
           reject(error);
         }
       );
