@@ -65,6 +65,24 @@ export function readSingleToDo(id) {
   return promise;
 }
 
+//read Knaban todo
+export function readKanban(stage) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((txn) => {
+      txn.executeSql(
+        `SELECT * FROM todos WHERE stage = ?`,
+        [stage],
+        (_, result) => {
+          resolve(result.rows._array);
+        },
+        (_, error) => {
+          reject(error);
+        })
+    })
+  });
+  return promise;
+}
+
 // creat todo
 export function createToDo(todo) {
   const promise = new Promise((resolve, reject) => {
