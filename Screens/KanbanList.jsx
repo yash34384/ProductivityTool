@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { readKanban } from '../Utils/database';
 
@@ -20,14 +20,14 @@ const KanbanList = ({ route, navigation }) => {
 
   const listComponent = ({ item }) => {
     return (
-      <View>
-        <Text>{item.description}</Text>
+      <View style={style.listItem}>
+        <Text style={style.desc}>{item.description}</Text>
       </View>
     );
   };
 
   return (
-    <View>
+    <View style={style.listContainer}>
       <FlatList
         data={list}
         renderItem={itemData => listComponent(itemData)}
@@ -38,3 +38,22 @@ const KanbanList = ({ route, navigation }) => {
 };
 
 export default KanbanList;
+
+const style = StyleSheet.create({
+  listContainer: {
+    padding: 10
+  },
+  listItem: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: 'black',
+    padding: 4,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginBottom: 10
+  },
+  desc: {
+    fontFamily: 'mukta-4',
+    fontSize: 20
+  }
+});
