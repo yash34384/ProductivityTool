@@ -3,7 +3,7 @@ import React from 'react';
 import KanbanBtn from '../Components/KanbanBtn';
 
 const Kanban = ({ navigation }) => {
-  async function getList(name) {
+  function getList(name) {
     navigation.navigate('KanbanList', {
       stage: name
     });

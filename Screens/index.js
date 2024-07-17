@@ -7,3 +7,4 @@ export { default as ThreeMethod } from './ThreeMethod';
 export { default as TimeBlocking } from './TimeBlocking';
 export { default as AddToDo } from './AddToDo';
 export { default as KanbanList } from './KanbanList';
+export { default as EisenhowerList } from './EisenhowerList';

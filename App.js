@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import {
   AddToDo,
   Eisenhower,
+  EisenhowerList,
   Home,
   Kanban,
   KanbanList,
@@ -135,6 +136,14 @@ export default function App() {
             component={KanbanList}
             options={{
               title: "Kanban List",
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name="EisenhowerList"
+            component={EisenhowerList}
+            options={{
+              title: "Eisenhower List",
               presentation: "modal",
             }}
           />
