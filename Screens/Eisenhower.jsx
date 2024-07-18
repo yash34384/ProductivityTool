@@ -3,36 +3,40 @@ import React from 'react';
 import EisenhowerBtn from '../Components/EisenhowerBtn';
 
 const Eisenhower = ({ navigation }) => {
-  function getEisenList() {
-    navigation.navigate('EisenhowerList');
+  function getEisenList(heading, isImportant, isUrgent) {
+    navigation.navigate('EisenhowerList', {
+      heading: heading,
+      isImportant: isImportant,
+      isUrgent: isUrgent
+    });
   }
   return (
     <View style={style.eisenScreen}>
       <EisenhowerBtn
         head={'Do'}
         detail={"Urgent and Important tasks you'll work on immediately."}
-        onPress={() => getEisenList('Do')}
+        onPress={() => getEisenList('Do', 0, 0)}
       />
       <EisenhowerBtn
         head={'Decide'}
         detail={
           'Important, but not Urgent, tasks that can be scheduled for later.'
         }
-        onPress={() => getEisenList('Decide')}
+        onPress={() => getEisenList('Decide', 0, 1)}
       />
       <EisenhowerBtn
         head={'Delegate'}
         detail={
           'Urgent, but not Important, tasks that need to be completed quickly.'
         }
-        onPress={() => getEisenList('Delegate')}
+        onPress={() => getEisenList('Delegate', 1, 0)}
       />
       <EisenhowerBtn
         head={'Delete'}
         detail={
           'Not Urgent or Important tasks that can be eliminated entirely.'
         }
-        onPress={() => getEisenList('Delete')}
+        onPress={() => getEisenList('Delete', 1, 1)}
       />
     </View>
   );
