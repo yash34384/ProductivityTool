@@ -13,6 +13,7 @@ import {
   Kanban,
   KanbanList,
   OneThreeFive,
+  OneThreeFiveList,
   Pomodoro,
   ThreeMethod,
   TimeBlocking,
@@ -144,6 +145,14 @@ export default function App() {
             component={EisenhowerList}
             options={{
               title: "Eisenhower List",
+              presentation: "modal",
+            }}
+          />
+          <Stack.Screen
+            name="OneThreeFiveList"
+            component={OneThreeFiveList}
+            options={{
+              title: "1-3-5 List",
               presentation: "modal",
             }}
           />

@@ -12,7 +12,7 @@ export function init() {
         description TEXT, 
         isImportant INTEGER, 
         isUrgent INTEGER, 
-        taskType INTEGER, 
+        taskType INTEGER,
         stage INTEGER DEFAULT 0
         )`,
         [],
@@ -90,6 +90,23 @@ export function readEisenhower(isImportant, isUrgent) {
       txn.executeSql(
         `SELECT * FROM todos WHERE isImportant = ? AND isUrgent = ?`,
         [isImportant, isUrgent],
+        (_, result) => {
+          resolve(result.rows._array);
+        },
+        (_, error) => {
+          reject(error);
+        })
+    })
+  })
+  return promise;
+}
+
+// read one three five todo 
+export function readOTF(type) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((txn) => {
+      txn.executeSql(`SELECT * FROM todos WHERE taskType = ? `,
+        [type],
         (_, result) => {
           resolve(result.rows._array);
         },

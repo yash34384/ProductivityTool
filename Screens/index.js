@@ -8,3 +8,4 @@ export { default as TimeBlocking } from './TimeBlocking';
 export { default as AddToDo } from './AddToDo';
 export { default as KanbanList } from './KanbanList';
 export { default as EisenhowerList } from './EisenhowerList';
+export { default as OneThreeFiveList } from './OneThreeFiveList'; 
