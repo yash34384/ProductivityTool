@@ -15,7 +15,6 @@ import {
   OneThreeFive,
   OneThreeFiveList,
   Pomodoro,
-  ThreeMethod,
   TimeBlocking,
 } from "./Screens";
 import BarBtn from "./Components/BarBtn";
@@ -101,13 +100,6 @@ export default function App() {
             component={Pomodoro}
             options={{
               title: "Pomodoro Technique",
-            }}
-          />
-          <Stack.Screen
-            name="ThreeMethod"
-            component={ThreeMethod}
-            options={{
-              title: "3-3-3 Method",
             }}
           />
           <Stack.Screen

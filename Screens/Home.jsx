@@ -24,20 +24,6 @@ const Home = ({ navigation }) => {
         </HomeBtn>
         <HomeBtn
           style={style.homeBtn}
-          logo={require('../assets/images/pomodoro.png')}
-          onPress={() => navigation.navigate('Pomodoro')}
-        >
-          Pomodoro Technique
-        </HomeBtn>
-        <HomeBtn
-          style={style.homeBtn}
-          logo={require('../assets/images/3-rule.png')}
-          onPress={() => navigation.navigate('ThreeMethod')}
-        >
-          3-3-3 Method
-        </HomeBtn>
-        <HomeBtn
-          style={style.homeBtn}
           logo={require('../assets/images/eisenhower.png')}
           onPress={() => navigation.navigate('Eisenhower')}
         >
@@ -49,6 +35,13 @@ const Home = ({ navigation }) => {
           onPress={() => navigation.navigate('OneThreeFive')}
         >
           1-3-5 Method
+        </HomeBtn>
+        <HomeBtn
+          style={style.homeBtn}
+          logo={require('../assets/images/pomodoro.png')}
+          onPress={() => navigation.navigate('Pomodoro')}
+        >
+          Pomodoro Technique
         </HomeBtn>
       </View>
     </ScrollView>
