@@ -5,9 +5,7 @@ const BarBtn = ({ onPress, icon, size, color }) => {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => {
-        pressed && style.pressed;
-      }}
+      style={({ pressed }) => (pressed ? style.pressed : [])}
     >
       <View style={style.container}>
         <Ionicons name={icon} size={size} color={color} />
@@ -23,6 +21,6 @@ const style = StyleSheet.create({
     marginHorizontal: 20
   },
   pressed: {
-    opacity: 0.6
+    opacity: 0.3
   }
 });
