@@ -1,12 +1,82 @@
-import { View, StyleSheet, Text, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, Alert, AppState } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import BarBtn from '../Components/BarBtn';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Pomodoro = () => {
   const totalMinutes = 30;
   const minutesLeft = 5;
   const [secondsLeft, setSecondsLeft] = useState(totalMinutes * 60);
   const [isRunning, setIsRunning] = useState(false);
+  const appState = useRef(AppState.currentState);
+
+  useEffect(() => {
+    const loadTimerState = async () => {
+      try {
+        const savedSecondsLeft = await AsyncStorage.getItem('secondsLeft');
+        const savedIsRunning = await AsyncStorage.getItem('isRunning');
+        const savedTimestamp = await AsyncStorage.getItem('timestamp');
+
+        if (savedSecondsLeft !== null && savedTimestamp !== null) {
+          const elapsedSeconds = Math.floor(
+            (Date.now() - JSON.parse(savedTimestamp)) / 1000
+          );
+          const updatedSecondsLeft =
+            JSON.parse(savedSecondsLeft) - elapsedSeconds;
+          setSecondsLeft(updatedSecondsLeft > 0 ? updatedSecondsLeft : 0);
+        }
+
+        if (savedIsRunning !== null) {
+          setIsRunning(JSON.parse(savedIsRunning));
+        }
+      } catch (error) {
+        console.error('Failed to load timer state', error);
+      }
+    };
+
+    loadTimerState();
+
+    const handleAppStateChange = async nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        const savedSecondsLeft = await AsyncStorage.getItem('secondsLeft');
+        const savedTimestamp = await AsyncStorage.getItem('timestamp');
+
+        if (savedSecondsLeft !== null && savedTimestamp !== null) {
+          const elapsedSeconds = Math.floor(
+            (Date.now() - JSON.parse(savedTimestamp)) / 1000
+          );
+          const updatedSecondsLeft =
+            JSON.parse(savedSecondsLeft) - elapsedSeconds;
+          setSecondsLeft(updatedSecondsLeft > 0 ? updatedSecondsLeft : 0);
+        }
+      }
+      appState.current = nextAppState;
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+  }, []);
+
+  useEffect(() => {
+    const saveTimerState = async () => {
+      try {
+        await AsyncStorage.setItem('secondsLeft', JSON.stringify(secondsLeft));
+        await AsyncStorage.setItem('isRunning', JSON.stringify(isRunning));
+        if (isRunning) {
+          await AsyncStorage.setItem('timestamp', JSON.stringify(Date.now()));
+        }
+        if (!isRunning) {
+          await AsyncStorage.setItem('timestamp', JSON.stringify(null));
+        }
+      } catch (error) {
+        console.error('Failed to save timer state', error);
+      }
+    };
+
+    saveTimerState();
+  }, [secondsLeft, isRunning]);
 
   useEffect(() => {
     let interval = null;
