@@ -1,14 +1,37 @@
-import { View, StyleSheet, Text, Alert, AppState } from 'react-native';
+import { View, StyleSheet, Text, AppState } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import BarBtn from '../Components/BarBtn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notification from 'expo-notifications';
+
+Notification.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowAlert: true
+    };
+  }
+});
 
 const Pomodoro = () => {
   const totalMinutes = 30;
-  const minutesLeft = 5;
+  const minutesLeft = 25;
   const [secondsLeft, setSecondsLeft] = useState(totalMinutes * 60);
   const [isRunning, setIsRunning] = useState(false);
   const appState = useRef(AppState.currentState);
+
+  function scheduleNotification(sec) {
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: 'Pomodoro Completed',
+        body: 'Your pomodoro completed🎉, you can rest for 5 minutes now.'
+      },
+      trigger: {
+        seconds: sec
+      }
+    });
+  }
 
   useEffect(() => {
     const loadTimerState = async () => {
@@ -87,13 +110,6 @@ const Pomodoro = () => {
     } else if (!isRunning && secondsLeft !== 0) {
       clearInterval(interval);
     }
-    if (secondsLeft === minutesLeft * 60) {
-      Alert.alert(
-        'Well Done',
-        'Your Pomodoro is complete. You can take 5 minutes of break before starting next.',
-        [{ text: 'Okay', style: 'default' }]
-      );
-    }
 
     if (secondsLeft === 0) {
       clearInterval(interval);
@@ -106,11 +122,13 @@ const Pomodoro = () => {
 
   const startTimer = () => {
     setIsRunning(true);
+    scheduleNotification(minutesLeft * 60 + 4);
   };
 
   const stopTimer = () => {
     setIsRunning(false);
     setSecondsLeft(totalMinutes * 60);
+    scheduleNotification(100 * 24 * 60 * 60);
   };
 
   const formatTime = seconds => {
