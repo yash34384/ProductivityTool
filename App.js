@@ -68,7 +68,7 @@ export default function App() {
             name="Home"
             component={Home}
             options={({ navigation }) => ({
-              title: "Productivity",
+              title: "TaskMaster",
               headerRight: ({ tintColor }) => (
                 <BarBtn
                   icon="add-circle"

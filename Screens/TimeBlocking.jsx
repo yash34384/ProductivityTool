@@ -78,11 +78,17 @@ const TimeBlocking = ({ navigation }) => {
   };
   return (
     <View style={style.TimeBlockingContainer}>
-      <FlatList
-        data={todos}
-        renderItem={itemData => todoComponent(itemData)}
-        keyExtractor={todo => todo.id}
-      />
+      {todos.length === 0 ? (
+        <View style={{ alignSelf: 'center' }}>
+          <Text style={style.desc}>No Todos yet</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={todos}
+          renderItem={itemData => todoComponent(itemData)}
+          keyExtractor={todo => todo.id}
+        />
+      )}
     </View>
   );
 };
