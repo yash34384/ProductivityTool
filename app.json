@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.yash_gupta.taskmaster"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,11 +32,16 @@
       [
         "expo-notifications",
         {
-          "icon": "./local/assets/images/icon.png",
+          "icon": "./assets/icon.png",
           "color": "#ffffff",
           "defaultChannel": "default"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "87c299a8-2d58-4e2c-b8dc-14f728b6c55a"
+      }
+    }
   }
 }
